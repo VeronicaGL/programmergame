@@ -26,30 +26,36 @@ export default function Navbar() {
       <nav className="container flex items-center justify-between">
         {
           user ? 
-          <Link to="/">
+          
             <div className="text-white">
             <p className='flex gap-2'><BiHappyBeaming /></p>
               Hola, {user.userName}!
             </div>
-          </Link>
-         : <Link className="text-white text-2xl font-bold" to="/home"><TbWorldCode /></Link>
+
+         : <Link className="text-white text-2xl font-bold"><TbWorldCode /></Link>
         }
-        <div className="flex items-center space-x-4 flex-grow justify-center">
-          <Link to="/" className="text-white">
-            Home
-          </Link>
-          <a href="/play" className="text-white">
-            <TfiGame />
+        {
+          user?
+          <Link to="/play">
+            <div className="text-white"><TfiGame />
             ¡Dale al play!
-          </a>
-          {user ? (
+          </div>
+          </Link>
+          :
+          <Link to="/"> 
+          <div className="text-white flex items-center space-x-4 flex-grow justify-center">
+            Home
+          </div>
+          </Link>
+        }
+          {
+          user ? (
           <a href="/profile" className="text-white">
           perfil
         </a>
         ) : (
           <Link to="/" > </Link>
         )}
-        </div>
         {user ? (
           <button
             className="text-white px-4 py-2 rounded-md"
