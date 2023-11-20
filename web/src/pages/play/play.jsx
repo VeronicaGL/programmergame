@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import { useAuthContext } from '../../contexts/AuthContext'
-import { randomQuestionsList, checkAnswer, getInfoUser } from '../../services/api-services'
-import { useNavigate } from 'react-router-dom'
-import { TbHeartCode } from "react-icons/tb";
+import React, { useEffect, useState } from 'react';
+import { useAuthContext } from '../../contexts/AuthContext';
+import { randomQuestionsList, checkAnswer, getInfoUser } from '../../services/api-services';
+import { json, useNavigate } from 'react-router-dom';
+import { TbHeartCode } from 'react-icons/tb';
 
 
 const Play = () => {
-  const { onLogin } = useAuthContext()
+  const { onLogin } = useAuthContext();
 
   const [questions, setQuestions] = useState(null);
   const [orderQuestion, setOrderQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const navigation = useNavigate()
+  const navigation = useNavigate();
   const [lives, setLives] = useState(2);
+  const [gameState, setGameState] = useState('playing');
 
   const handleAnswerSelect = (answer) => {
     setSelectedAnswer(answer);
@@ -26,37 +27,41 @@ const Play = () => {
         if (!response.isCorrect) {
           setLives((prev) => (prev > 0 ? prev - 1 : 0));
         }
-        setOrderQuestion((prevOrder) => prevOrder + 1)
+        setOrderQuestion((prevOrder) => prevOrder + 1);
         setSelectedAnswer(null);
       })
-      .catch(error => console.error(error))
-  }
+      .catch(error => console.error(error));
+  };
+
+  useEffect(() => {
+    // Cargar preguntas aleatorias al montar el componente o al reiniciar el juego
+    if (gameState === 'playing') {
+      if (orderQuestion === 0) {
+        randomQuestionsList()
+          .then((randoms) => {
+            setQuestions(randoms.questions);
+          })
+          .catch((error) => console.error(error));
+      }
+    }
+  }, [gameState, orderQuestion]);
 
   useEffect(() => {
     if (lives === 0 || orderQuestion === questions?.length) {
       setTimeout(() => {
         getInfoUser()
           .then(user => {
-            onLogin(user)
+            onLogin(user);
             navigation("/profile")
           })
-          .catch(error => console.error(error))
-      }, 4000)
+          .catch(error => console.error(error));
+      }, 4000);
     }
-  }, [lives, orderQuestion])
-
-  useEffect(() => {
-    randomQuestionsList()
-      .then((randoms) => {
-        setQuestions(randoms.questions)
-      })
-      .catch((error) => console.error(error))
-  }, []);
+  }, [lives, orderQuestion]);
 
   const iconsLive = Array.from({ length: lives }, (_, index) => (
     <TbHeartCode key={index} style={{ fontSize: '2rem' }} />
   ));
-
   return (
     <section className="mt-6 drop-shadow-2xl flex items-center justify-center">
       <div className="bg-white p-6 rounded shadow-md w-[600px]">
@@ -64,10 +69,12 @@ const Play = () => {
           <div className="">
             <p className="flex justify-end mb-6">{iconsLive}</p>
             <div className="text-center">
-              <div className="question-container"> {/* Agregar nueva clase para el contenedor de la pregunta */}
-                <p className="font-semibold uppercase text-rose-700 p-4 mb-5">{questions[orderQuestion].question}</p>
+              <div className="question-container">
+                <p className="font-semibold uppercase text-rose-700 p-4 mb-5">
+                  {questions[orderQuestion].question}
+                </p>
               </div>
-              <label className="flex font-light hover:bg-slate-100 mb-3 answer-label"> {/* Agregar nueva clase para la etiqueta de la respuesta */}
+              <label className="flex font-light hover:bg-slate-100 mb-3 answer-label">
                 <input
                   type="checkbox"
                   id="draft"
@@ -79,7 +86,7 @@ const Play = () => {
                 />
                 {questions[orderQuestion].a}
               </label>
-              <label className="flex font-light hover:bg-slate-100 mb-3 answer-label"> {/* Agregar nueva clase para la etiqueta de la respuesta */}
+              <label className="flex font-light hover:bg-slate-100 mb-3 answer-label">
                 <input
                   type="checkbox"
                   name="answer"
@@ -90,7 +97,7 @@ const Play = () => {
                 />
                 {questions[orderQuestion].b}
               </label>
-              <label className="flex font-light hover:bg-slate-100 mb-3 answer-label"> {/* Agregar nueva clase para la etiqueta de la respuesta */}
+              <label className="flex font-light hover:bg-slate-100 mb-3 answer-label">
                 <input
                   type="checkbox"
                   name="answer"
@@ -101,7 +108,7 @@ const Play = () => {
                 />
                 {questions[orderQuestion].c}
               </label>
-              <label className="flex font-light hover:bg-slate-100 mb-3 answer-label"> {/* Agregar nueva clase para la etiqueta de la respuesta */}
+              <label className="flex font-light hover:bg-slate-100 mb-3 answer-label">
                 <input
                   type="checkbox"
                   name="answer"
@@ -122,12 +129,16 @@ const Play = () => {
           </div>
         ) : (
           <div>
-            <p></p>
+             {lives  > 0  ? (
+              <p>¡Has ganado!</p>
+            ) : (
+              <p>¡Has perdido!</p>
+            )}
           </div>
         )}
       </div>
     </section>
   );
-}
+};
 
-export default Play
+export default Play;
