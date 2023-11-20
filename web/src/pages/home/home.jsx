@@ -1,28 +1,33 @@
 import { Link } from 'react-router-dom';
-import programerImage from '/images/programmergame.jpg'
+import programerImage from '/images/programmergame.png'
+import { HiCursorArrowRays } from "react-icons/hi2";
+
 
 const Home = () => {
   return (
-    <div className="flex items-center justify-center mt-6" >
-      <div className="max-w-md mx-auto rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+    <div className="mt-4 flex justify-center items-center">
+      <div className="max-w-{500}">
         <div className="md:flex">
           <div className="md:shrink-0">
+            <img className='w-80 h-80 float-right' src={programerImage} alt="Programador" />
           </div>
-          <div className="p-6">
-            <img className='p-2 w-80 h-80 float-right' src={programerImage} />
-            <a href="#" className="mt-16 block text-lg leading-tight font-medium text-black hover:underline">
+          <div className="p-4 text-justify grid justify-items-stretch max-w-lg">
+            <a className="text-center mt-5 font-medium text-3xl text-black">
               ¿Quién quiere ser programador?
             </a>
-            <p className="mt-2 text-gray-700">
+            <p className="mt-5 text-gray-700 text-xl">
               Si eres novato, senior, intermedio... da igual el nivel que tengas.
               Anímate a contestar las preguntas y sacar el mayor número de puntos.
               Pon a prueba tu conocimiento en programación.
             </p>
-            <p className="uppercase tracking-wide text-sm text-purple-800 font-semibold mt-4">
+            <p className=" text-xl uppercase tracking-wide text-purple-800 mt-3">
               ¿Aceptas el desafío?
             </p>
-            <div className="mt-4">
-              <Link to="/register" className="text-pink-700 hover:text-violet-500">Regístrate aquí</Link>
+            <div className="mt-5">
+              <Link to="/register" className="text-pink-700 hover:text-violet-500 text-4xl font-semibold">Regístrate aquí</Link>
+              <div className="mt-2">
+              <HiCursorArrowRays className="text-violet-500 w-8 h-8 ml-20" />
+              </div>
             </div>
           </div>
         </div>

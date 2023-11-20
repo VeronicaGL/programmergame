@@ -1,72 +1,75 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAuthContext } from '../../contexts/AuthContext'
-import { useForm } from 'react-hook-form'
+import React, { useEffect } from 'react';
+import Chart from 'chart.js/auto';
+import { useAuthContext } from '../../contexts/AuthContext';
+import gravatar from 'gravatar'
 
-export default function Profile() {
+const Profile = () => {
   const { user } = useAuthContext();
-  
-  return (
-    <section>
-      <h1>Perfil de Usuario</h1>
-      <section>
-        <h3>Datos Personales</h3>
-        <div>
-          <label>UserName</label>
-          <p>{user.userName}</p>
-        </div>
-        <div>
-          Media de acierto : {(user.rightQuestions.length / (user.rightQuestions.length + user.wrongQuestions.length)) * 100}%
-        </div>
-        <section className='flex'>
-          <div className='right-questions'>
-            <p>Preguntas acertadas: {user.rightQuestions.length}</p>
-            {user.rightQuestions.map(question => <p>{question.question}</p>)}
-          </div>
-          <div className='wrong-questions'>
-            <p>Preguntas falladas: {user.wrongQuestions.length}</p>
-            {user.wrongQuestions.map(question => <p>{question.question}</p>)}
-          </div>
-        </section>
-      </section>
-    </section>
-  )
-}
+  const totalQuestions = user.rightQuestions.length + user.wrongQuestions.length;
+  const avatarUrl = `https://i.pravatar.cc/150?u=${user.userName}`
 
-/**
- * {
-  "wrongQuestions": [],
-  "name": "Vero",
-  "userName": "Vero",
-  "email": "vero@example.com",
-  "password": "$2a$10$qeKs5ETVOXlP4xKf65t8iu1PH9ZcxEUIdXlINf52JSMVpvy1HZ/5a",
-  "level": 0,
-  "isAdmin": true,
-  "rightQuestions": [
-    {
-      "_id": "654a991618776b7a72338e4c",
-      "question": "¿Qué se refiere coúnmente como backenden el desarrollo web?",
-      "a": "La parte delantera de un sitio web",
-      "b": "La parte visible de una página web",
-      "c": "La parte del servidor que maneja la lógca y la base de datos",
-      "d": "La parte de diseñográfico de un sito web",
-      "solution": "c",
-      "level": 2,
-      "__v": 0
-    },
-    {
-      "_id": "654a991618776b7a72338e4c",
-      "question": "¿Qué se refiere coúnmente como backenden el desarrollo web?",
-      "a": "La parte delantera de un sitio web",
-      "b": "La parte visible de una página web",
-      "c": "La parte del servidor que maneja la lógca y la base de datos",
-      "d": "La parte de diseñográfico de un sito web",
-      "solution": "c",
-      "level": 2,
-      "__v": 0
-    }
-  ],
-  "id": "654a985018776b7a72338e37",
-  "totalAnswers": 2
+  useEffect(() => {
+    const rightQuestionsCount = user.rightQuestions.length;
+    const wrongQuestionsCount = user.wrongQuestions.length;
+
+    const usersChart = new Chart(document.getElementById('usersChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Preguntas Acertadas', 'Preguntas Falladas'],
+        datasets: [{
+          data: [rightQuestionsCount, wrongQuestionsCount],
+          backgroundColor: ['#800080', '#D3D3D3'],
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          position: 'bottom'
+        }
+      }
+    });
+
+    return () => {
+      usersChart.destroy();
+    };
+  }, [user.rightQuestions.length, user.wrongQuestions.length]);
+
+  return (
+    <div className="flex justify-center items-center">
+      <div className="image overflow-hidden">
+        <img
+          className="h-200 w-200 mx-auto"
+          src={avatarUrl}
+        />
+        <div className="bg-white p-2">
+          <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow px-5 mt-4 divide-y rounded shadow-sm">
+            <li className="flex items-center py-2">
+              <span className="text-gray-900 leading-5 p-1">Username:</span>
+              <span className="flex-grow">
+                <span className="py-1 px-2 text-sm text-left">{user.userName}</span>
+              </span>
+            </li>
+            <li className="flex items-center py-2">
+              <span className="text-gray-900 p-1">Email:</span>
+              <span className="py-1 px-2 text-sm">{user.email}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div className="mx-8 text-center mt-8">
+        <h2 className="text-gray-500 text-lg font-semibold pb-3"> Total de preguntas: {totalQuestions}</h2>
+        <div className="my-5"></div>
+        <div className="bg-white p-3 border-t-2 border-purple-400"></div>
+        <div
+          className="chart-container"
+          style={{ position: 'relative', height: '250px', width: '100%' }}
+        >
+          <canvas id="usersChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+  );
 }
- */
+export default Profile;

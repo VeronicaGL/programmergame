@@ -72,15 +72,16 @@ export default function CreateUserPage() {
               {errors.password && <span>{errors.password.message}</span>}
             </div>
           </div>
-
-          <button
-            type="submit"
-            className="w-full flex justify-center py-2 px-4 shadow-lg shadow-indigo-500/75 mt-4 bg-purple-700 opacity-50 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-150 text-white rounded "
-          >
-            Registrarse
-          </button>
+          <div className="mt-4">
+            <button
+              type="submit"
+              className="w-full flex justify-center py-2 shadow-lg shadow-indigo-500/75 bg-purple-700 opacity-50 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-150 text-white rounded mt-6"
+            >
+              Registrarse
+            </button>
+          </div>
         </form>
-        <div className="mt-4 text-center">
+        <div className="mt-6 text-center">
           ¿Ya tienes una cuenta? <Link to="/login" className="text-rose-600 hover:text-rose-500">Inicia sesión aquí.</Link>
         </div>
       </div>

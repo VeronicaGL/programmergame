@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useAuthContext } from '../../contexts/AuthContext'
 import { randomQuestionsList, checkAnswer, getInfoUser } from '../../services/api-services'
 import { useNavigate } from 'react-router-dom'
-import { FaHeart } from "react-icons/fa";
+import { TbHeartCode } from "react-icons/tb";
+
 
 const Play = () => {
   const { onLogin } = useAuthContext()
@@ -23,7 +24,7 @@ const Play = () => {
     checkAnswer({ question: currentQuestion.id, selectedAnswer })
       .then(response => {
         if (!response.isCorrect) {
-          setLives(prev => prev - 1)
+          setLives((prev) => (prev > 0 ? prev - 1 : 0));
         }
         setOrderQuestion((prevOrder) => prevOrder + 1)
         setSelectedAnswer(null);
@@ -35,11 +36,11 @@ const Play = () => {
     if (lives === 0 || orderQuestion === questions?.length) {
       setTimeout(() => {
         getInfoUser()
-        .then(user => {
-          onLogin(user)
-          navigation("/profile")
-        })
-        .catch(error => console.error(error))
+          .then(user => {
+            onLogin(user)
+            navigation("/profile")
+          })
+          .catch(error => console.error(error))
       }, 4000)
     }
   }, [lives, orderQuestion])
@@ -52,76 +53,81 @@ const Play = () => {
       .catch((error) => console.error(error))
   }, []);
 
-  return (
-    <section className="mt-12 drop-shadow-2xl flex items-center justify-center mt-[80px]">
-      <div className="bg-white p-9 rounded shadow-md">
-        {questions && orderQuestion < questions.length && lives > 0 ? (
-          <div>
-            <p>{questions[orderQuestion].id}</p>
-            <p className='flex gap-2'><FaHeart />{lives}</p>
-            <p>length: {questions.length}</p>
-            <p className="font-semibold uppercase text-rose-700 mb-4">{questions[orderQuestion].question}</p>
-            <label className="font-light block mb-2 hover:bg-slate-100">
-              <input
-                type="checkbox"
-                id="draft"
-                name="answer"
-                value="a"
-                checked={selectedAnswer === 'a'}
-                onChange={() => handleAnswerSelect('a')}
-                className="mr-2 accent-violet-500 focus:accent-violet-300"
+  const iconsLive = Array.from({ length: lives }, (_, index) => (
+    <TbHeartCode key={index} style={{ fontSize: '2rem' }} />
+  ));
 
-              />
-              {questions[orderQuestion].a}
-            </label>
-            <label className="font-light block mb-2 hover:bg-slate-100">
-              <input
-                type="checkbox"
-                name="answer"
-                value="b"
-                checked={selectedAnswer === 'b'}
-                onChange={() => handleAnswerSelect('b')}
-                className="mr-2 accent-violet-500 focus:accent-violet-300"
-              />
-              {questions[orderQuestion].b}
-            </label>
-            <label className="font-light block mb-2 hover:bg-slate-100">
-              <input
-                type="checkbox"
-                name="answer"
-                value="c"
-                checked={selectedAnswer === 'c'}
-                onChange={() => handleAnswerSelect('c')}
-                className="mr-2 accent-violet-500 focus:accent-violet-300"
-              />
-              {questions[orderQuestion].c}
-            </label>
-            <label className="font-light block mb-2 hover:bg-slate-100">
-              <input
-                type="checkbox"
-                name="answer"
-                value="d"
-                checked={selectedAnswer === 'd'}
-                onChange={() => handleAnswerSelect('d')}
-                className="mr-2 accent-violet-500 focus:accent-violet-300"
-              />
-              {questions[orderQuestion].d}
-            </label>
-            <button
-              onClick={handleNextQuestion}
-              className="shadow-lg shadow-indigo-500/75 mt-4 bg-purple-700 opacity-50 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-150 text-white py-1 px-5 rounded"
-            >
-              Siguiente Pregunta
-            </button>
+  return (
+    <section className="mt-6 drop-shadow-2xl flex items-center justify-center">
+      <div className="bg-white p-6 rounded shadow-md w-[600px]">
+        {questions && orderQuestion < questions.length && lives > 0 ? (
+          <div className="">
+            <p className="flex justify-end mb-6">{iconsLive}</p>
+            <div className="text-center">
+              <div className="question-container"> {/* Agregar nueva clase para el contenedor de la pregunta */}
+                <p className="font-semibold uppercase text-rose-700 p-4 mb-5">{questions[orderQuestion].question}</p>
+              </div>
+              <label className="flex font-light hover:bg-slate-100 mb-3 answer-label"> {/* Agregar nueva clase para la etiqueta de la respuesta */}
+                <input
+                  type="checkbox"
+                  id="draft"
+                  name="answer"
+                  value="a"
+                  checked={selectedAnswer === 'a'}
+                  onChange={() => handleAnswerSelect('a')}
+                  className="mr-2 h-5 w-5 accent-violet-500 focus:accent-violet-300"
+                />
+                {questions[orderQuestion].a}
+              </label>
+              <label className="flex font-light hover:bg-slate-100 mb-3 answer-label"> {/* Agregar nueva clase para la etiqueta de la respuesta */}
+                <input
+                  type="checkbox"
+                  name="answer"
+                  value="b"
+                  checked={selectedAnswer === 'b'}
+                  onChange={() => handleAnswerSelect('b')}
+                  className="mr-2 h-5 w-5 accent-violet-500 focus:accent-violet-300"
+                />
+                {questions[orderQuestion].b}
+              </label>
+              <label className="flex font-light hover:bg-slate-100 mb-3 answer-label"> {/* Agregar nueva clase para la etiqueta de la respuesta */}
+                <input
+                  type="checkbox"
+                  name="answer"
+                  value="c"
+                  checked={selectedAnswer === 'c'}
+                  onChange={() => handleAnswerSelect('c')}
+                  className="mr-2 h-5 w-5 accent-violet-500 focus:accent-violet-300"
+                />
+                {questions[orderQuestion].c}
+              </label>
+              <label className="flex font-light hover:bg-slate-100 mb-3 answer-label"> {/* Agregar nueva clase para la etiqueta de la respuesta */}
+                <input
+                  type="checkbox"
+                  name="answer"
+                  value="d"
+                  checked={selectedAnswer === 'd'}
+                  onChange={() => handleAnswerSelect('d')}
+                  className="mr-2 h-5 w-5 accent-violet-500 focus:accent-violet-300"
+                />
+                {questions[orderQuestion].d}
+              </label>
+              <button
+                onClick={handleNextQuestion}
+                className="shadow-lg shadow-indigo-500/75 mt-4 bg-purple-700 opacity-50 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-150 text-white py-1 px-5 rounded"
+              >
+                Siguiente Pregunta
+              </button>
+            </div>
           </div>
         ) : (
-         <div> 
-          <p>¡Juego completado!</p>
-        </div>
+          <div>
+            <p></p>
+          </div>
         )}
       </div>
     </section>
-  )
+  );
 }
 
 export default Play

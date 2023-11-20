@@ -13,7 +13,7 @@ const Background = ({ children }) => {
 
   return (
 
-    <div style={backgroundStyles}>{children}</div>
+    <div class="bg-no-repeat bg-cover bg-center bg-center" style={backgroundStyles}>{children}</div>
 
   );
 };
