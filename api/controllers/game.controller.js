@@ -5,7 +5,7 @@ const Questions = require('../models/questions/questions.models')
 module.exports.randomQuestionsList = async (req, res, next) => {
 
   try {
-    const allQuestions = await Questions.find()
+    let allQuestions = await Questions.find()
     if (allQuestions.length === 0) {
       return res.status(404).json({ message: '¡No quedan más preguntas!' })
     }
@@ -21,14 +21,16 @@ module.exports.randomQuestionsList = async (req, res, next) => {
     const questionsRandom = []
     const numberQuestionsListGame = 5
 
-    /*if (allQuestions.length >= numberQuestionsListGame) {
+    if (allQuestions.length >= numberQuestionsListGame) {
       for (let i = 0; i < numberQuestionsListGame; i++) {
-        questionsRandom.push(allQuestions[i])
+        const randomIndex = Math.floor(Math.random() * allQuestions.length);
+        questionsRandom.push(allQuestions[randomIndex]);
+        allQuestions.splice(randomIndex, 1);
       }
     } else {
       return res.status(404).json({ message: 'No quedan suficientes preguntas' })
-    }*/
-    res.status(200).json({ questions: allQuestions })
+    }
+    res.status(200).json({ questions: questionsRandom })
   } catch (error) {
     console.error('Error al obtener las preguntas', error)
     res.status(500).json({ message: 'Error del servidor' })
