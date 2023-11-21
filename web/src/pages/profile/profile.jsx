@@ -41,6 +41,7 @@ const Profile = () => {
         <img
           className="h-200 w-200 mx-auto"
           src={avatarUrl}
+          alt="User Avatar"
         />
         <div className="bg-white p-2">
           <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow px-5 mt-4 divide-y rounded shadow-sm">
@@ -53,6 +54,10 @@ const Profile = () => {
             <li className="flex items-center py-2">
               <span className="text-gray-900 p-1">Email:</span>
               <span className="py-1 px-2 text-sm">{user.email}</span>
+            </li>
+            <li className="flex items-center py-2">
+              <span className="text-gray-900 p-1">Puntos:</span>
+              <span className="py-1 px-2 text-sm">{user.level}</span>
             </li>
           </ul>
         </div>
@@ -69,7 +74,7 @@ const Profile = () => {
         </div>
       </div>
     </div>
-
   );
-}
+};
+
 export default Profile;

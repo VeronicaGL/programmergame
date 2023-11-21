@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const questionSchema = new mongoose.Schema({
-  question: String, 
+  question: String,
   a: String,
   b: String,
-  c: String, 
-  d: String,  
+  c: String,
+  d: String,
   solution: String,
   level: Number,
 }, {

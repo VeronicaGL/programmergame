@@ -1,4 +1,3 @@
-const gameUser = require('../models/game/game.models')
 const User = require('../models/users/user.models')
 const Questions = require('../models/questions/questions.models')
 
@@ -51,9 +50,11 @@ module.exports.checkAnswer = async (req, res, next) => {
       return res.status(404).json({ message: 'No se encontró la pregunta' })
     }
     if (question.solution === req.body.selectedAnswer) {
-      
+
       req.user.rightQuestions.push(question._id)
-      await req.user.save()
+      req.user.level += question.level;
+
+      const savedUser = await req.user.save()
       return res.status(200).json({ message: '¡Respuesta Correcta!', isCorrect: true })
     } else {
       req.user.wrongQuestions.push(question._id)
@@ -66,8 +67,12 @@ module.exports.checkAnswer = async (req, res, next) => {
   }
 }
 
-// recibe req.body.question el ID de la pregunta
-// recibe req.body.answer: "a",b, c...
-// busca la pregunta Question.findById(req.body.question)
-// si question.solution es igual a req.body.answer:^
-// añadimos la question al usuario en req.user.rightQuestions.push..
+module.exports.getTopUsers = async (req, res, next) => {
+  try {
+    const topUsers = await User.find().sort({ level: -1 }).limit(3);
+    res.json({ topUsers });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener los mejores usuarios' });
+  }
+};

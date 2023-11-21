@@ -30,8 +30,10 @@ const userSchema = new mongoose.Schema({
       return gravatar.url(userName, { s: '150', r: 'pg', d: 'identicon' });
     },
   },
-  score: {
+  level: {
     type: Number,
+    default: 0,
+    required: true,
   },
   isAdmin: {
     type: Boolean

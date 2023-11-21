@@ -6,4 +6,4 @@ mongoose.connect(MONGODB_URI)
   .then(() =>
     console.info(`conect to the database ${MONGODB_URI}`))
   .catch((error) =>
-    console.error(`An error in to the database ${MONGODB_URI}`,error)) 
+    console.error(`An error in to the database ${MONGODB_URI}`, error)) 

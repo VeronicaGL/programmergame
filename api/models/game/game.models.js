@@ -14,7 +14,7 @@ const gameSchema = new mongoose.Schema({
   correctQuestion: {
     type: [String],
     required: true
-  } 
+  }
 });
 const game = mongoose.model('game', gameSchema)
 module.exports = game;

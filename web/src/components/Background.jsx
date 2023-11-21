@@ -6,7 +6,7 @@ const Background = ({ children }) => {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    height: '100vh', 
+    height: '100vh',
     zindex: '-1',
     position: 'relative',
   };

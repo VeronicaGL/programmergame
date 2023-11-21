@@ -10,8 +10,8 @@ service.interceptors.response.use(
     return response.data
   },
   (error) => {
-    if ( 
-      error.response.status === 401 && 
+    if (
+      error.response.status === 401 &&
       window.location.pathname !== "/login"
     ) {
       localStorage.removeItem("user")
@@ -40,11 +40,11 @@ export function createUser(body) {
   return service.post('/register', body)
 }
 
-export function profile(body){
+export function profile(body) {
   return service.patch("/profile", body)
 }
 
-export function game(data){
+export function game(data) {
   return service.post("/play", data)
 }
 
@@ -58,4 +58,8 @@ export function checkAnswer(body) {
 
 export function getInfoUser() {
   return service.get("/me")
+}
+
+export function getTopUsers(query = "") {
+  return service.get(`/game/topUsers${query}`)
 }

@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom'
 import { useAuthContext } from '../contexts/AuthContext'
 
-export function Authenticated ({ children }) {
+export function Authenticated({ children }) {
   const { user } = useAuthContext()
   if (!user) {
     return <Navigate to="/login" />
@@ -10,7 +10,7 @@ export function Authenticated ({ children }) {
   }
 }
 
-export function Unauthenticated ({ children }) {
+export function Unauthenticated({ children }) {
   const { user } = useAuthContext()
   if (user) {
     return <Navigate to="/" />

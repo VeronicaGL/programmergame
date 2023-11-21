@@ -9,7 +9,7 @@ import Profile from './pages/profile/profile'
 import Play from './pages/play/play'
 
 function App() {
-  
+
   return (
     <div className="App">
       <Background>

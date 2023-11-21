@@ -9,7 +9,7 @@ module.exports.isAuthenticated = (req, res, next) => {
 }
 
 module.exports.isAdmin = (req, res, next) => {
-  if(req.user.isAdmin) {
+  if (req.user.isAdmin) {
     next()
   } else {
     next(createError(401, "Unauthorized"))

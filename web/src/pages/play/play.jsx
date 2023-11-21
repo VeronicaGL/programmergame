@@ -4,7 +4,6 @@ import { randomQuestionsList, checkAnswer, getInfoUser } from '../../services/ap
 import { json, useNavigate } from 'react-router-dom';
 import { TbHeartCode } from 'react-icons/tb';
 
-
 const Play = () => {
   const { onLogin } = useAuthContext();
 
@@ -34,7 +33,6 @@ const Play = () => {
   };
 
   useEffect(() => {
-    // Cargar preguntas aleatorias al montar el componente o al reiniciar el juego
     if (gameState === 'playing') {
       if (orderQuestion === 0) {
         randomQuestionsList()
@@ -62,6 +60,7 @@ const Play = () => {
   const iconsLive = Array.from({ length: lives }, (_, index) => (
     <TbHeartCode key={index} style={{ fontSize: '2rem' }} />
   ));
+
   return (
     <section className="mt-6 drop-shadow-2xl flex items-center justify-center">
       <div className="bg-white p-6 rounded shadow-md w-[600px]">
@@ -129,7 +128,7 @@ const Play = () => {
           </div>
         ) : (
           <div>
-             {lives  > 0  ? (
+            {lives > 0 ? (
               <p>¡Has ganado!</p>
             ) : (
               <p>¡Has perdido!</p>

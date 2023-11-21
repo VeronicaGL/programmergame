@@ -1,5 +1,5 @@
 const expressSession = require("express-session");
-const MongoStore = require("connect-mongo"); 
+const MongoStore = require("connect-mongo");
 const mongoose = require("mongoose");
 const User = require("../models/users/user.models");
 
@@ -20,18 +20,18 @@ module.exports.session = expressSession({
 
 module.exports.loadSessionUser = (req, res, next) => {
   const userId = req.session.userId;
-    if(userId) {
-      User.findById(userId)
+  if (userId) {
+    User.findById(userId)
       .populate("rightQuestions")
       .populate("wrongQuestions")
-        .then((user) => {
-          req.user = user;
-          next();
-        })
-        .catch((error) => next(error));
+      .then((user) => {
+        req.user = user;
+        next();
+      })
+      .catch((error) => next(error));
 
-    } else {
-      next();
-    }
+  } else {
+    next();
+  }
 }
 

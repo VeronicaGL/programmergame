@@ -8,7 +8,7 @@ module.exports.userCreate = async (req, res, next) => {
       userName: req.body.userName,
       email: req.body.email,
       password: req.body.password,
-      //avatar: (?)
+      avatar: req.body.avatar
     })
 
     const user = await newUser.save()
@@ -35,7 +35,7 @@ module.exports.getDetailUser = (req, res, next) => {
 }
 
 module.exports.userLogin = async (req, res, next) => {
- try {
+  try {
     const user = await User.findOne({ userName: req.body.userName })
       .populate("rightQuestions")
       .populate("wrongQuestions")
@@ -56,10 +56,10 @@ module.exports.userLogin = async (req, res, next) => {
 }
 
 module.exports.logout = (req, res, next) => {
-  try{
+  try {
     req.session.destroy()
-    res.status(204).json({ message: "Sessión cerrada"})
+    res.status(204).json({ message: "Sessión cerrada" })
   } catch (error) {
-    res.status(500).json({message: 'Error en el logout'})
+    res.status(500).json({ message: 'Error en el logout' })
   }
 }
