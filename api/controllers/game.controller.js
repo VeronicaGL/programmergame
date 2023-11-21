@@ -69,7 +69,7 @@ module.exports.checkAnswer = async (req, res, next) => {
 
 module.exports.getTopUsers = async (req, res, next) => {
   try {
-    const topUsers = await User.find().sort({ level: -1 }).limit(3);
+    const topUsers = await User.find().sort({ level: -1}).limit(3);
     res.json({ topUsers });
   } catch (error) {
     console.error(error);
