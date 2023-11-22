@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { randomQuestionsList, checkAnswer, getInfoUser } from '../../services/api-services';
 import { json, useNavigate } from 'react-router-dom';
+import Winner from '/images/winner.png';
+import gameOver from '/images/gameover.png';
 import { TbHeartCode } from 'react-icons/tb';
 
 const Play = () => {
@@ -129,9 +131,13 @@ const Play = () => {
         ) : (
           <div>
             {lives > 0 ? (
-              <p>¡Has ganado!</p>
+              <div className="flex items-center justify-center">
+              <img className="w-80 h-80" src={Winner} />
+            </div>
             ) : (
-              <p>¡Has perdido!</p>
+              <div className="flex items-center justify-center">
+                <img className="w-80 h-80" src={gameOver} />
+              </div>
             )}
           </div>
         )}

@@ -6,7 +6,7 @@ const Background = ({ children }) => {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    height: '100vh',
+    height: '150vh',
     zindex: '-1',
     position: 'relative',
   };
@@ -19,4 +19,3 @@ const Background = ({ children }) => {
 };
 
 export default Background
-
